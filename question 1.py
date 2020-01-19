@@ -1,0 +1,81 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+dataset = pd.read_csv('50_Startups.csv')
+n=dataset.loc[dataset.State=='New York',:]
+c=dataset.loc[dataset.State=='California' ,:]
+yn=n.iloc[:,-1].values
+w=np.arange(17)
+xn=w.reshape(-1,1)
+yc=c.iloc[:,-1].values
+f=np.arange(17)
+xc=f.reshape(-1,1)
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(xn, yn)
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures()
+X_poly = poly_reg.fit_transform(xn)
+poly_reg.fit(X_poly, yn)
+lin_reg_2 = LinearRegression()
+lin_reg_2.fit(X_poly, yn)
+plt.scatter(xn, yn)
+plt.plot(xn, lin_reg.predict(xn))
+plt.title('NEWYORK')
+plt.xlabel('STARTUPS')
+plt.ylabel('PROFIT')
+plt.show()
+plt.scatter(xn, yn)
+plt.plot(xn, lin_reg_2.predict(poly_reg.fit_transform(xn)))
+plt.title('NEWYORK')
+plt.xlabel('STATUPS')
+plt.ylabel('PROFITS')
+plt.show()
+X_grid = np.arange(min(xn), max(xn), 0.1)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(xn, yn)
+plt.plot(X_grid, lin_reg_2.predict(poly_reg.fit_transform(X_grid)))
+plt.title('NEWYORK')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+from sklearn.linear_model import LinearRegression
+lin_regc = LinearRegression()
+lin_regc.fit(xc, yc)
+from sklearn.preprocessing import PolynomialFeatures
+poly_regc = PolynomialFeatures()
+X_polyc = poly_regc.fit_transform(xc)
+poly_regc.fit(X_polyc, yc)
+lin_reg_2c = LinearRegression()
+lin_reg_2c.fit(X_polyc, yc)
+plt.scatter(xc, yc)
+plt.plot(xc, lin_regc.predict(xc))
+plt.title('CALIFORNIA')
+plt.xlabel('startups')
+plt.ylabel('profit')
+plt.show()
+plt.scatter(xc, yc)
+plt.plot(xc, lin_reg_2c.predict(poly_regc.fit_transform(xn)))
+plt.title('CALIFORNIA')
+plt.xlabel('startup')
+plt.ylabel('profit')
+plt.show()
+Xc_grid = np.arange(min(xc), max(xc), 0.1)
+Xc_grid = Xc_grid.reshape((len(Xc_grid), 1))
+plt.scatter(xc, yc)
+plt.plot(Xc_grid, lin_reg_2c.predict(poly_regc.fit_transform(Xc_grid)))
+plt.title('CALIFORNIA')
+plt.xlabel('startup')
+plt.ylabel('profit')
+plt.show()
+lin_reg.predict([[6.5]])
+NEWYORK=lin_reg_2c.predict(poly_regc.fit_transform([[6.5]]))
+print('NEWYORK=',lin_reg_2.predict(poly_reg.fit_transform([[6.5]])))
+print('CALIFORNIA=',lin_reg_2c.predict(poly_regc.fit_transform([[6.5]])))
+newyork=lin_reg_2.predict(poly_reg.fit_transform([[6.5]]))
+california=lin_reg_2c.predict(poly_regc.fit_transform([[6.5]]))
+if (newyork < california):
+   A='CALIFORNIA WILL GET MORE PROFIT'
+else:
+  A="NEWYORK WILL GET MORE PROFIT" 
+print (A)
